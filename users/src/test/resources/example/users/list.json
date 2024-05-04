@@ -1,0 +1,56 @@
+[
+    {
+        "id": 99,
+        "name": "john",
+        "lastName": "doe",
+        "email": "john.doe@email.com",
+        "birthday": "2000-12-01",
+        "phoneNumber": "123456789",
+        "address": "1234 Main St"
+    },
+    {
+        "id": 100,
+        "name": "jane",
+        "lastName": "smith",
+        "email": "jane.smith@email.com",
+        "birthday": "1995-05-10",
+        "phoneNumber": "987654321",
+        "address": "456 Elm St"
+    },
+    {
+        "id": 101,
+        "name": "alex",
+        "lastName": "brown",
+        "email": "alex.brown@email.com",
+        "birthday": "1988-09-15",
+        "phoneNumber": "555555555",
+        "address": "789 Oak St"
+    },
+    {
+        "id": 102,
+        "name": "sarah",
+        "lastName": "johnson",
+        "email": "sarah.johnson@email.com",
+        "birthday": "1992-03-25",
+        "phoneNumber": "111111111",
+        "address": "321 Pine St"
+    },
+    {
+        "id": 103,
+        "name": "michael",
+        "lastName": "wilson",
+        "email": "michael.wilson@email.com",
+        "birthday": "1980-11-05",
+        "phoneNumber": "999999999",
+        "address": "654 Cedar St"
+    },
+    {
+        "id": 104,
+        "name": "emily",
+        "lastName": "thompson",
+        "email": "emily.thompson@email.com",
+        "birthday": "1998-07-20",
+        "phoneNumber": "444444444",
+        "address": "987 Birch St"
+    }
+]
