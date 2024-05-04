@@ -4,4 +4,4 @@ This is the solution to the assigment from [Clear Solutions](company) based on [
 
 ## General information
 
-The project is within the [users](user-solutions/users) repository. It is a Restful API , that creates , updates, reads and deletes entities of type User.
+The project is within the [users](users/) repository. It is a Restful API , that creates , updates, reads and deletes entities of type User.
