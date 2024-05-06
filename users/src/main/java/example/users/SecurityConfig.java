@@ -47,6 +47,12 @@ class SecurityConfig {
       .password(passwordEncoder.encode("abc123"))
       .roles("NON-OWNER") // No roles for now
       .build();
-   return new InMemoryUserDetailsManager(admin, darioOwnsNoUsers);
+
+    UserDetails paris = users
+      .username("paris")
+      .password(passwordEncoder.encode("abc123"))
+      .roles("USER-OWNER") // No roles for now
+      .build();
+   return new InMemoryUserDetailsManager(admin, darioOwnsNoUsers, paris);
   }
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,6 +98,19 @@ public class UserController {
         }
         
    }
+
+   @DeleteMapping("/{requestedId}")
+    private ResponseEntity<Void> deleteUser(@PathVariable Long requestedId, Principal principal){
+        if(userRepository.existsByIdAndOwner(requestedId, principal.getName())) {
+            userRepository.deleteById(requestedId);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+
+        
+
+          
+    }
 
    private User findUser(Long requestedId, Principal principal) {
         return userRepository.findByIdAndOwner(requestedId, principal.getName());

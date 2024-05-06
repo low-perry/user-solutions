@@ -8,6 +8,7 @@ interface UserRepository extends CrudRepository<User, Long>, PagingAndSortingRep
 
     User findByIdAndOwner(Long id, String owner);
     Page<User> findByOwner(String owner, PageRequest pageRequest);
+    boolean existsByIdAndOwner(Long id, String owner);
 
     
 }

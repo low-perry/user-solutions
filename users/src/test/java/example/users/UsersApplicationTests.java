@@ -4,6 +4,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -235,6 +236,42 @@ class UsersApplicationTests {
 			.exchange("/users/105", HttpMethod.PUT, requestUpdate, Void.class);
 
 		assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	@DirtiesContext
+	void shouldDeleteExistingUser(){
+		ResponseEntity<Void> deleteResponse = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.exchange("/users/99", HttpMethod.DELETE, null, Void.class);
+		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+		ResponseEntity<String> response = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.getForEntity("/users/99", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	void shouldNotDeleteUserThatDoesNotExist(){
+		ResponseEntity<Void> deleteResponse = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.exchange("/users/1000", HttpMethod.DELETE, null, Void.class);
+		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	void shouldNotDeleteUserThatIsNotOwned(){
+		ResponseEntity<Void> deleteResponse = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.exchange("/users/105", HttpMethod.DELETE, null, Void.class);
+
+		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+		ResponseEntity<String> response = restTemplate
+			.withBasicAuth("paris", "abc123")
+			.getForEntity("/users/105", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
 }
