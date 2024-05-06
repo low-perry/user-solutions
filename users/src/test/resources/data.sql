@@ -15,3 +15,6 @@ VALUES (103, 'michael', 'wilson', 'michael.wilson@email.com', '1980-11-05', '999
 
 INSERT INTO "USER" (ID, NAME, LAST_NAME, EMAIL, BIRTHDAY, PHONE_NUMBER, ADDRESS, OWNER)
 VALUES (104, 'emily', 'thompson', 'emily.thompson@email.com', '1998-07-20', '444444444', '987 Birch St', 'admin');
+
+INSERT INTO "USER" (ID, NAME, LAST_NAME, EMAIL, BIRTHDAY, PHONE_NUMBER, ADDRESS, OWNER)
+VALUES (105, 'helen', 'troy', 'helen.troy@email.com', '1997-07-20', '444444444', '987 Birch St', 'paris2');

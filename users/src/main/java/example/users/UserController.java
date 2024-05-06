@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/users")
@@ -29,9 +30,9 @@ public class UserController {
     }
 
    @GetMapping("/{requestedId}")
-   private ResponseEntity<User> findById(@PathVariable Long requestedId) {
+   private ResponseEntity<User> findById(@PathVariable Long requestedId, Principal principal){
     
-        Optional<User> userOptional = userRepository.findById(requestedId);
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByIdAndOwner(requestedId, principal.getName()));
 
         if(userOptional.isPresent()) {
             return ResponseEntity.ok(userOptional.get());
@@ -43,9 +44,10 @@ public class UserController {
 
 
     @GetMapping
-    private ResponseEntity<List<User>> findAll(Pageable pageable) {
+    private ResponseEntity<List<User>> findAll(Pageable pageable, Principal principal) {
     
-        Page<User> page = userRepository.findAll(
+        Page<User> page = userRepository.findByOwner(
+            principal.getName(),
             PageRequest.of(
                 pageable.getPageNumber(), 
                 pageable.getPageSize(), 
@@ -58,9 +60,11 @@ public class UserController {
     }
 
    @PostMapping
-   private ResponseEntity<Void> createUser(@RequestBody User newUser, UriComponentsBuilder ucb){
+   private ResponseEntity<Void> createUser(@RequestBody User newUser, UriComponentsBuilder ucb, Principal principal){
 
-        User savedUser = userRepository.save(newUser);
+        User userWithOwner = new User(null, newUser.getName(), newUser.getLastName(), newUser.getEmail(), newUser.getBirthday(), newUser.getPhoneNumber(), newUser.getAddress(), principal.getName());
+
+        User savedUser = userRepository.save(userWithOwner);
 
         URI locationOfNewUser = ucb
             .path("/users/{id}")
