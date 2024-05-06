@@ -5,6 +5,7 @@
     "email": "john.doe@email.com",
     "birthday": "2000-12-01",
     "phoneNumber": "123456789",
-    "address": "1234 Main St"
+    "address": "1234 Main St",
+    "owner": "admin"
 
 }

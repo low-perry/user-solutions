@@ -24,12 +24,12 @@ public class UserJsonTest {
     @BeforeEach
     void setUp(){
         users = Arrays.array(
-            new User(99L, "john", "doe", "john.doe@email.com", LocalDate.parse("2000-12-01"), "123456789", "1234 Main St"),
-            new User(100L, "jane", "smith", "jane.smith@email.com", LocalDate.parse("1995-05-10"), "987654321", "456 Elm St"),
-            new User(101L, "alex", "brown", "alex.brown@email.com", LocalDate.parse("1988-09-15"), "555555555", "789 Oak St"),
-            new User(102L, "sarah", "johnson", "sarah.johnson@email.com", LocalDate.parse("1992-03-25"), "111111111", "321 Pine St"),
-            new User(103L, "michael", "wilson", "michael.wilson@email.com", LocalDate.parse("1980-11-05"), "999999999", "654 Cedar St"),
-            new User(104L, "emily", "thompson", "emily.thompson@email.com", LocalDate.parse("1998-07-20"), "444444444", "987 Birch St")
+            new User(99L, "john", "doe", "john.doe@email.com", LocalDate.parse("2000-12-01"), "123456789", "1234 Main St", "admin"),
+            new User(100L, "jane", "smith", "jane.smith@email.com", LocalDate.parse("1995-05-10"), "987654321", "456 Elm St", "admin"),
+            new User(101L, "alex", "brown", "alex.brown@email.com", LocalDate.parse("1988-09-15"), "555555555", "789 Oak St", "admin"),
+            new User(102L, "sarah", "johnson", "sarah.johnson@email.com", LocalDate.parse("1992-03-25"), "111111111", "321 Pine St", "admin"),
+            new User(103L, "michael", "wilson", "michael.wilson@email.com", LocalDate.parse("1980-11-05"), "999999999", "654 Cedar St", "admin"),
+            new User(104L, "emily", "thompson", "emily.thompson@email.com", LocalDate.parse("1998-07-20"), "444444444", "987 Birch St", "admin")
 
         );
     }
@@ -60,6 +60,12 @@ public class UserJsonTest {
         assertThat(this.json.write(user)).hasJsonPathValue("@.address");
         assertThat(this.json.write(user)).extractingJsonPathStringValue("@.address").isEqualTo("1234 Main St");
 
+        assertThat(this.json.write(user)).hasJsonPathValue("@.birthday");
+        assertThat(this.json.write(user)).extractingJsonPathStringValue("@.birthday").isEqualTo("2000-12-01");
+
+        assertThat(this.json.write(user)).hasJsonPathValue("@.owner");
+        assertThat(this.json.write(user)).extractingJsonPathStringValue("@.owner").isEqualTo("admin");
+
         
     }
 
@@ -82,13 +88,14 @@ public class UserJsonTest {
                 "email":"john.doe@email.com",
                 "birthday":"2000-12-01",
                 "phoneNumber":"123456789",
-                "address":"1234 Main St"
+                "address":"1234 Main St",
+                "owner":"admin"
            }
            """;
     
 
         assertThat(this.json.parse(expected))
-           .isEqualTo(new User(99L ,"john", "doe", "john.doe@email.com", LocalDate.parse("2000-12-01"), "123456789", "1234 Main St"));
+           .isEqualTo(new User(99L ,"john", "doe", "john.doe@email.com", LocalDate.parse("2000-12-01"), "123456789", "1234 Main St", "admin"));
 
         assertThat(this.json.parseObject(expected).getId()).isEqualTo(99);
         assertThat(this.json.parseObject(expected).getName()).isEqualTo("john");
@@ -97,6 +104,7 @@ public class UserJsonTest {
         assertThat(this.json.parseObject(expected).getBirthday()).isEqualTo(LocalDate.parse("2000-12-01"));
         assertThat(this.json.parseObject(expected).getPhoneNumber()).isEqualTo("123456789");
         assertThat(this.json.parseObject(expected).getAddress()).isEqualTo("1234 Main St");
+        assertThat(this.json.parseObject(expected).getOwner()).isEqualTo("admin");
 
  }
     @Test
@@ -110,7 +118,8 @@ public class UserJsonTest {
                     "email":"john.doe@email.com",
                     "birthday":"2000-12-01",
                     "phoneNumber":"123456789",
-                    "address":"1234 Main St"
+                    "address":"1234 Main St",
+                    "owner":"admin"
                 },
                 {
                     "id":100,
@@ -119,7 +128,8 @@ public class UserJsonTest {
                     "email":"jane.smith@email.com",
                     "birthday":"1995-05-10",
                     "phoneNumber":"987654321",
-                    "address":"456 Elm St"
+                    "address":"456 Elm St",
+                    "owner":"admin"
                 },
                 {
                     "id":101,
@@ -128,7 +138,8 @@ public class UserJsonTest {
                     "email":"alex.brown@email.com",
                     "birthday":"1988-09-15",
                     "phoneNumber":"555555555",
-                    "address":"789 Oak St"
+                    "address":"789 Oak St",
+                    "owner":"admin"
                 },
                 {
                     "id":102,
@@ -137,7 +148,8 @@ public class UserJsonTest {
                     "email":"sarah.johnson@email.com",
                     "birthday":"1992-03-25",
                     "phoneNumber":"111111111",
-                    "address":"321 Pine St"
+                    "address":"321 Pine St",
+                    "owner":"admin"
                 },
                 {
                     "id":103,
@@ -146,7 +158,8 @@ public class UserJsonTest {
                     "email":"michael.wilson@email.com",
                     "birthday":"1980-11-05",
                     "phoneNumber":"999999999",
-                    "address":"654 Cedar St"
+                    "address":"654 Cedar St",
+                    "owner":"admin"
                 },
                 {
                     "id":104,
@@ -155,7 +168,8 @@ public class UserJsonTest {
                     "email":"emily.thompson@email.com",
                     "birthday":"1998-07-20",
                     "phoneNumber":"444444444",
-                    "address":"987 Birch St"
+                    "address":"987 Birch St",
+                    "owner":"admin"
                 }
             ]
         """;

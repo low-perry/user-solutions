@@ -33,6 +33,7 @@ class UsersApplicationTests {
 		assertThat(json.read("$.birthday", String.class)).isEqualTo("2000-12-01");
 		assertThat(json.read("$.phoneNumber", String.class)).isEqualTo("123456789");
 		assertThat(json.read("$.address", String.class)).isEqualTo("1234 Main St");
+		assertThat(json.read("$.owner", String.class)).isEqualTo("admin");
 	
 	}
 	@Test
@@ -76,7 +77,7 @@ class UsersApplicationTests {
 	@Test
 	@DirtiesContext
 	void shouldCreateANewUser() {
-		User user = new User(null, "john", "doe", "john.d@email.com", LocalDate.parse("2001-12-01"), "123456789", "1234 Main St");
+		User user = new User(null, "john", "doe", "john.d@email.com", LocalDate.parse("2001-12-01"), "123456789", "1234 Main St", "admin");
 		ResponseEntity<Void> createResponse = restTemplate.postForEntity("/users", user, Void.class);
 		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -92,6 +93,7 @@ class UsersApplicationTests {
 		assertThat(json.read("$.birthday", String.class)).isEqualTo("2001-12-01");
 		assertThat(json.read("$.phoneNumber", String.class)).isEqualTo("123456789");
 		assertThat(json.read("$.address", String.class)).isEqualTo("1234 Main St");
+		assertThat(json.read("$.owner", String.class)).isEqualTo("admin");
 	}
 
 	@Test 
