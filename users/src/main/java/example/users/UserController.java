@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,10 +33,10 @@ public class UserController {
    @GetMapping("/{requestedId}")
    private ResponseEntity<User> findById(@PathVariable Long requestedId, Principal principal){
     
-        Optional<User> userOptional = Optional.ofNullable(userRepository.findByIdAndOwner(requestedId, principal.getName()));
+        User userOptional = findUser(requestedId, principal);
 
-        if(userOptional.isPresent()) {
-            return ResponseEntity.ok(userOptional.get());
+        if(userOptional != null) {
+            return ResponseEntity.ok(userOptional);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -72,5 +73,32 @@ public class UserController {
             .toUri();
 
         return ResponseEntity.created(locationOfNewUser).build();
+   }
+
+   @PutMapping("/{requestedId}")
+   private ResponseEntity<Void> updateUser(@PathVariable Long requestedId, @RequestBody User updatedUser, Principal principal){
+    
+        User userOptional = findUser(requestedId, principal);
+
+        if(userOptional != null) {
+            User user = userOptional;
+            user.setName(updatedUser.getName());
+            user.setLastName(updatedUser.getLastName());
+            user.setEmail(updatedUser.getEmail());
+            user.setBirthday(updatedUser.getBirthday());
+            user.setPhoneNumber(updatedUser.getPhoneNumber());
+            user.setAddress(updatedUser.getAddress());
+
+            userRepository.save(user);
+
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+        
+   }
+
+   private User findUser(Long requestedId, Principal principal) {
+        return userRepository.findByIdAndOwner(requestedId, principal.getName());
    }
 }
