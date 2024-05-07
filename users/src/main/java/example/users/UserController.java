@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.security.Principal;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -62,7 +63,7 @@ public class UserController {
     }
 
    @PostMapping
-   private ResponseEntity<Void> createUser(@RequestBody User newUser, UriComponentsBuilder ucb, Principal principal){
+   private ResponseEntity<Void> createUser(@Valid @RequestBody User newUser, UriComponentsBuilder ucb, Principal principal){
 
         User userWithOwner = new User(null, newUser.getName(), newUser.getLastName(), newUser.getEmail(), newUser.getBirthday(), newUser.getPhoneNumber(), newUser.getAddress(), principal.getName());
 

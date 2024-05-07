@@ -3,20 +3,33 @@ package example.users;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import example.users.validation.Adult;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import org.springframework.data.annotation.Id;
+import jakarta.validation.constraints.Email;
 
 public class User {
     @Id 
-    private Long id; 
+    private Long id;
 
-    
-    private String name; 
+    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be blank")
+    private String name;
 
-    
+    @NotNull(message = "Last name cannot be null")
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
+    @Email(message = "Email should be valid")
+    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
+    @NotNull(message = "Birthday cannot be null")
+    @Past(message = "Birthday must be in the past")
+    @Adult
     private LocalDate birthday;
 
     private String phoneNumber;

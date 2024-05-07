@@ -273,5 +273,16 @@ class UsersApplicationTests {
 			.getForEntity("/users/105", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
+	@Test
+	@DirtiesContext
+	void shouldRetrunForbidden() {
+		User user = new User(null, "john", "doe", "john.d@email.com", LocalDate.parse("2020-12-01"), "123456789", "1234 Main St", null);
+		ResponseEntity<Void> createResponse = restTemplate
+				.withBasicAuth("admin", "abc123")
+				.postForEntity("/users", user, Void.class);
 
+		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+
+	}
 }
