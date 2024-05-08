@@ -275,14 +275,45 @@ class UsersApplicationTests {
 	}
 	@Test
 	@DirtiesContext
-	void shouldRetrunForbidden() {
+	void shouldRetrunBadRequest() {
 		User user = new User(null, "john", "doe", "john.d@email.com", LocalDate.parse("2020-12-01"), "123456789", "1234 Main St", null);
 		ResponseEntity<Void> createResponse = restTemplate
 				.withBasicAuth("admin", "abc123")
 				.postForEntity("/users", user, Void.class);
 
-		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-
-
+		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
+
+	@Test
+	void shouldReturnBadRequestWhenEndDateIsBeforeStartDate(){
+		ResponseEntity<String> response = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.getForEntity("/users/2020-12-01/2000-12-01", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	void shouldReturnSomeUsersBetweenDates(){
+		ResponseEntity<String> response = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.getForEntity("/users/1990-01-01/2000-01-01", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext json = JsonPath.parse(response.getBody());
+
+		int userCount = json.read("$.length()", Integer.class);
+		assertThat(userCount).isEqualTo(3);
+		
+		JSONArray ids = json.read("$..id");
+		assertThat(ids).containsExactlyInAnyOrder(100, 102, 104);
+	}
+
+	@Test
+	void shouldReturnBAdRequestWhenDatesAreIllegal() {
+		ResponseEntity<String> response = restTemplate
+			.withBasicAuth("admin", "abc123")
+			.getForEntity("/users/202a-12-01/2000-12-01", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
 }
